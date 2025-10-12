@@ -3,11 +3,11 @@ import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/lib/mdxComponents";
 import remarkGfm from "remark-gfm";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 
 export async function generateMetadata(
   { params }: { params: { slug?: string[] } },
-  parent: ResolvingMetadata
+
 ): Promise<Metadata> {
   const slugParts = params.slug ?? [];
   const originalSlug = restoreOriginalSlug(slugParts);
