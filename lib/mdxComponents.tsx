@@ -9,20 +9,16 @@ interface MDXImageProps extends Partial<ImageProps> {
   srcDark?: string;
 }
 
-function normalizeSrc(
-  src?: string | { default?: { src?: string }; src?: string }
-): string {
+function normalizeSrc(src?: string | any): string {
   if (!src) return "";
-
   if (typeof src === "string") {
     if (src.startsWith("http")) return src;
     return `${CDN_PREFIX}${src}`;
   }
-
-  // ha default-ban van (pl. importált kép esetén)
-  if (src.default?.src) return src.default.src;
+  // ha default-ban van
+  if (src.default && src.default.src) return src.default.src;
+  // ha sima StaticImport
   if (src.src) return src.src;
-
   return "";
 }
 // MDX komponens mapping típusosítva

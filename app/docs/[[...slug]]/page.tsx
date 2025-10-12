@@ -4,12 +4,14 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/lib/mdxComponents";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
+import { Check, X as Cross, Info, AlertTriangle } from "lucide-react";
 
 export async function generateMetadata(
-  { params }: { params: { slug?: string[] } },
+  { params }: { params: Promise<{ slug?: string[] }> },
 
 ): Promise<Metadata> {
-  const slugParts = params.slug ?? [];
+  const { slug } = await params;
+  const slugParts = slug ?? [];
   const originalSlug = restoreOriginalSlug(slugParts);
   const filePath = resolveDocFile(originalSlug);
 
@@ -56,9 +58,9 @@ export interface DocFrontmatter {
 }
 
 export default async function DocsSlugPage({
-  params,
+  params
 }: {
-  params: { slug?: string[] };
+  params: Promise<{ slug?: string[] }>;
 }) {
   const { slug } = await params;
   const slugParts = slug ?? [];
@@ -71,16 +73,21 @@ export default async function DocsSlugPage({
   const components = {
     AppOnly: ({ children }: { children: React.ReactNode }) => {
       if (!isAppSection) return null;
-      return <div className="border-l-4 border-blue-500 pl-4 my-4">{children}</div>;
+      return <>{children}</>;
     },
     PagesOnly: ({ children }: { children: React.ReactNode }) => {
       if (!isPagesSection) return null;
-      return <div className="border-l-4 border-green-500 pl-4 my-4">{children}</div>;
+      return <>{children}</>;
     },
-    Image: mdxComponents.Image // ← a képes komponensed megmaradhat központilag
+    Image: mdxComponents.Image, // ← a képes komponensed megmaradhat központilag
+
+    Check: (props: any) => <Check {...props} />,
+    Cross: (props: any) => <Cross {...props} />,
+    Info: (props: any) => <Info {...props} />,
+    Alert: (props: any) => <AlertTriangle {...props} />,
   };
 
-  // 🧹 URL-ben megtisztított slug
+  //  URL-ben megtisztított slug
   const originalSlug = restoreOriginalSlug(slugParts);
 
   const filePath = resolveDocFile(originalSlug);
@@ -98,7 +105,7 @@ export default async function DocsSlugPage({
     options: {
       parseFrontmatter: true,
       mdxOptions: {
-        remarkPlugins: [remarkGfm], // ✅ fontos!
+        remarkPlugins: [remarkGfm],
       },
     },
     components,
@@ -106,7 +113,7 @@ export default async function DocsSlugPage({
 
 
 
-  // 🔸 Ha van `source` mező → betöltjük a hivatkozott fájlt is
+  // Ha van `source` mező → betöltjük a hivatkozott fájlt is
   let extraContent = null;
   if (frontmatter?.source) {
     const refPath = restoreOriginalSourcePath(frontmatter.source);
@@ -159,7 +166,7 @@ export default async function DocsSlugPage({
           {(() => {
             const links = resolveRelatedLinks(frontmatter.related.links);
 
-            // 🟡 ha csak egy link van, egy kártya széltében
+            // ha csak egy link van, egy kártya széltében
             if (links.length === 1) {
               const link = links[0];
               return (
@@ -177,7 +184,7 @@ export default async function DocsSlugPage({
               );
             }
 
-            // 🟢 ha több link van, gridben rendezzük
+            //  ha több link van, gridben rendezzük
             if (links.length > 1) { }
             return (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -215,7 +222,7 @@ function resolveDocFile(slug: string[]) {
     const index = path.join(baseDir, "index.mdx");
     if (fs.existsSync(index)) return index;
   }
-  console.log(baseDir)
+
   const indexInDir = path.join(baseDir, ...slug, "index.mdx");
   if (fs.existsSync(indexInDir)) return indexInDir;
 
@@ -305,7 +312,7 @@ function restoreOriginalSlug(cleaned: string[]) {
       }
     }
   });
-  // console.log(result)
+  
   return result;
 };
 
