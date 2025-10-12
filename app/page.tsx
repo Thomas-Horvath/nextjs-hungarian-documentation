@@ -21,7 +21,7 @@ export default function HomePage() {
                          bg-clip-text bg-contain bg-no-repeat
                          text-transparent"
 
-            style={{ backgroundImage: "url('/hungary-flag.svg')", backgroundSize: "100% 100%", backgroundPosition: "center 0px", }}
+            style={{ backgroundImage: "url('/hungary-flag.svg')", backgroundSize: "100% auto", backgroundPosition: "center 2px", }}
           >
             Magyar
           </p>
