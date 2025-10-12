@@ -5,6 +5,7 @@ import { mdxComponents } from "@/lib/mdxComponents";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 import { Check, X as Cross, Info, AlertTriangle } from "lucide-react";
+import type { LucideProps } from "lucide-react";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug?: string[] }> },
@@ -81,10 +82,11 @@ export default async function DocsSlugPage({
     },
     Image: mdxComponents.Image, // ← a képes komponensed megmaradhat központilag
 
-    Check: (props: any) => <Check {...props} />,
-    Cross: (props: any) => <Cross {...props} />,
-    Info: (props: any) => <Info {...props} />,
-    Alert: (props: any) => <AlertTriangle {...props} />,
+
+    Check: (props: LucideProps) => <Check {...props} />,
+    Cross: (props: LucideProps) => <Cross {...props} />,
+    Info: (props: LucideProps) => <Info {...props} />,
+    Alert: (props: LucideProps) => <AlertTriangle {...props} />,
   };
 
   //  URL-ben megtisztított slug
@@ -312,7 +314,7 @@ function restoreOriginalSlug(cleaned: string[]) {
       }
     }
   });
-  
+
   return result;
 };
 

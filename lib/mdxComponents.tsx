@@ -9,7 +9,15 @@ interface MDXImageProps extends Partial<ImageProps> {
   srcDark?: string;
 }
 
-function normalizeSrc(src?: string | any): string {
+type StaticLike =
+  | string
+  | {
+    default?: { src?: string };
+    src?: string;
+  };
+
+
+function normalizeSrc(src?: StaticLike): string {
   if (!src) return "";
   if (typeof src === "string") {
     if (src.startsWith("http")) return src;
