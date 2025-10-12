@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+
+@theme {
+  --color-btn:  #ffffffeb;
+  --color-border: #ffffff24;
+  --shadow: box-shadow: 0 0 0 1px #ffffff24,0 0 0 1px tarnsparent;
+
+}
+
+
+
+
+
+/* 🌙 Globális stílus */
+:root {
+  --prose-text: #e5e7eb;
+  --prose-link: #60a5fa;
+  --prose-link-hover: #93c5fd;
+  --prose-muted: #9ca3af;
+  --prose-bg-code: #1e1e1e;
+  --prose-border: #374151;
+}
+
+body {
+  background-color: #000;
+  color: var(--prose-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+/* 📝 Alap beállítások */
+.prose {
+  max-width: 100%;
+  color: var(--prose-text);
+  line-height: 1.75;
+  font-size: 1rem;
+}
+
+/* 🧭 Címsorok */
+.prose h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.prose h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.015em;
+}
+
+.prose h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ✍️ Bekezdések */
+.prose p {
+  margin-top: 0.85rem;
+  margin-bottom: 0.85rem;
+  color: var(--prose-text);
+}
+
+/* 🔗 Linkek */
+.prose a {
+  color: var(--prose-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+.prose a:hover {
+  color: var(--prose-link-hover);
+}
+
+/* 📋 Listák */
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.prose li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+  color: var(--prose-text);
+}
+
+.prose ul li::marker {
+  color: var(--prose-link);
+}
+
+.prose ol li::marker {
+  color: var(--prose-muted);
+}
+
+/* 🖼️ Képek */
+.prose img {
+  background-color: #222;
+  border-radius: 0.75rem;
+  margin: 2rem auto;
+  display: block;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* 🧾 Blockquote */
+.prose blockquote {
+  border-left: 4px solid var(--prose-link);
+  padding-left: 1rem;
+  font-style: italic;
+  color: #d1d5db;
+  background-color: rgba(37, 99, 235, 0.05);
+  margin: 1.75rem 0;
+}
+
+/* 💻 Inline code */
+.prose code {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  background-color: #2a2a2a;
+  color: #60a5fa; 
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  white-space: pre-wrap;
+}
+
+/* 📦 Kódblokkok */
+.prose pre {
+  background-color: var(--prose-bg-code);
+  color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+  border: 1px solid #2a2a2a;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* 📊 Táblázatok */
+/* 📊 Táblázatok – NEXT.JS DOCS STYLE */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  background-color: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.prose thead {
+  background-color: #1a1a1a;
+  color: #f3f4f6;
+  font-weight: 600;
+}
+
+.prose th,
+.prose td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #2a2a2a;
+  vertical-align: top;
+}
+
+.prose th {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #f3f4f6;
+}
+
+.prose td {
+  color: #d1d5db;
+  font-size: 0.9rem;
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.prose tbody tr:hover td {
+  background-color: #1e293b; /* hover highlight */
+}
+
+.prose table a {
+  color: #60a5fa;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose table a:hover {
+  color: #93c5fd;
+}
+
+
+/* ⚠️ Note Box */
+.prose .note {
+  background-color: rgba(37, 99, 235, 0.1);
+  border-left: 4px solid var(--prose-link);
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  margin: 1.5rem 0;
+  color: var(--prose-text);
+}
+
+/* 📏 Vízszintes vonal */
+.prose hr {
+  border: none;
+  border-top: 1px solid #2a2a2a;
+  margin: 2rem 0;
+}
