@@ -2,14 +2,39 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen px-6 bg-black text-white">
+    <main className="flex flex-col items-center justify-center relative
+                     min-h-screen px-6
+                     bg-black text-white">
       <div className="w-full max-w-2xl space-y-6 text-center">
-        {/* Logó vagy cím */}
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl leading-[80px]">
-          🇭🇺  Next.js Magyar Dokumentáció
-        </h1>
+        <div
+          className="absolute inset-0
+                     bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)]
+                     pointer-events-none
+                     bg-[size:40px_40px]"
+        />
 
-        <p className="text-lg text-gray-600 dark:text-gray-400 ">
+        {/* Logó vagy cím */}
+        <div className="flex flex-col items-center justify-center
+                        font-extrabold  sm:text-6xl lg:text-8xl text-5xl tracking-tight">
+          <h1>Next.js</h1>
+          <p className="my-4 font-extrabold  uppercase
+                         bg-clip-text bg-contain bg-no-repeat
+                         text-transparent"
+
+            style={{ backgroundImage: "url('/hungary-flag.svg')", backgroundSize: "100% 100%", backgroundPosition: "center 0px", }}
+          >
+            Magyar
+          </p>
+
+
+
+
+
+
+          <h2>Dokumentáció</h2>
+        </div>
+
+        <p className="text-lg text-gray-600 dark:text-gray-400">
           A Next.js hivatalos dokumentációjának magyar fordítása — tanulj, építs, alkoss.
         </p>
 
@@ -18,9 +43,7 @@ export default function HomePage() {
             href="/docs/app"
             className="px-5 py-3
                        font-medium text-base
-                       bg-btn  hover:bg-white/80 
-                       text-black
-                       ring ring-white/30
+                       bg-btn hover:bg-white/80 ring ring-white/30 text-black
                        duration-200 transition-colors"
           >
             App Router
@@ -29,11 +52,9 @@ export default function HomePage() {
             href="/docs/pages"
             className="px-5 py-3
                        font-medium text-base
-                       bg-[transparent] 
-                       hover:bg-white/30 text-white
-                       ring ring-white/30
-}
-                       duration-200 transition-colors"
+                       bg-[transparent] hover:bg-white/30 ring ring-white/30 text-white
+                       duration-200 transition-colors
+                       }"
           >
             Pages Router
           </Link>
