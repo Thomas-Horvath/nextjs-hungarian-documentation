@@ -61,7 +61,7 @@ export default function HomePage() {
         </div>
 
         <footer className="mt-12 text-sm text-gray-500 dark:text-gray-400">
-          Készült Next.js-szel · Fordítás: <strong>Thomas Horvath</strong>
+          Készült Next.js-szel · Fordítás: <strong>Thomas Horvath </strong>2025
         </footer>
       </div>
     </main>
