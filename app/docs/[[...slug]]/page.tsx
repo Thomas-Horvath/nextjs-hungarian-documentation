@@ -55,6 +55,7 @@ import type { Metadata } from "next";
 import { Check, X as Cross, Info, AlertTriangle } from "lucide-react";
 import type { LucideProps } from "lucide-react";
 import Link from "next/link";
+import PrismHighlighter from "../../PrismHighlighter";
 import {
   resolveDocFile,
   restoreOriginalSlug,
@@ -224,11 +225,13 @@ export default async function DocsSlugPage({
       {frontmatter?.description && <p>{frontmatter.description}</p>}
 
       {/* 📖 MDX tartalom renderelése */}
+      <PrismHighlighter />
       {content}
 
       {/* 🧩 Extra tartalom renderelése, ha van */}
       {extraContent && (
         <div className="mt-2 pt-6 border-t border-gray-700">
+          <PrismHighlighter />
           {extraContent}
         </div>
       )}

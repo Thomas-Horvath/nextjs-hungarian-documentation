@@ -1,10 +1,11 @@
 @import "tailwindcss";
+@import "prismjs/themes/prism-tomorrow.css";
 
 
 @theme {
-  --color-btn:  #ffffffeb;
+  --color-btn: #ffffffeb;
   --color-border: #ffffff24;
-  --shadow: box-shadow: 0 0 0 1px #ffffff24,0 0 0 1px tarnsparent;
+  --shadow: box-shadow: 0 0 0 1px #ffffff24, 0 0 0 1px tarnsparent;
 
 }
 
@@ -81,6 +82,7 @@ body {
   text-underline-offset: 3px;
   transition: color 0.2s ease;
 }
+
 .prose a:hover {
   color: var(--prose-link-hover);
 }
@@ -133,7 +135,7 @@ body {
   font-family: 'Fira Code', monospace;
   font-size: 0.9rem;
   background-color: #2a2a2a;
-  color: #60a5fa; 
+  color: #60a5fa;
   padding: 0.15rem 0.35rem;
   border-radius: 0.25rem;
   white-space: pre-wrap;
@@ -158,6 +160,71 @@ body {
   padding: 0;
   color: inherit;
   font-size: inherit;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #d4d4d4;
+  background: #1e1e1e;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-shadow: none;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #6a9955;
+}
+
+.token.punctuation {
+  color: #d4d4d4;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #569cd6;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #ce9178;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.token.variable {
+  color: #d4d4d4;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #c586c0;
+}
+
+.token.function {
+  color: #dcdcaa;
+}
+
+.token.regex,
+.token.important {
+  color: #d16969;
+}
+
+.token.deleted {
+  color: #ce9178;
 }
 
 /* 📊 Táblázatok */
@@ -203,7 +270,8 @@ body {
 }
 
 .prose tbody tr:hover td {
-  background-color: #1e293b; /* hover highlight */
+  background-color: #1e293b;
+  /* hover highlight */
 }
 
 .prose table a {
@@ -211,6 +279,7 @@ body {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
 .prose table a:hover {
   color: #93c5fd;
 }
