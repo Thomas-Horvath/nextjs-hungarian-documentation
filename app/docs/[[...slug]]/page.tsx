@@ -1,52 +1,89 @@
+/**
+ * 📄 DocsSlugPage (dinamikus dokumentációs oldal)
+ *
+ * Ez az oldal felelős egy konkrét dokumentációs oldal (MDX fájl) betöltéséért és megjelenítéséért
+ * a `/docs/[...slug]` útvonal alapján.
+ *
+ * 🧭 Fő funkciói:
+ * - A slug alapján betölti a megfelelő MDX fájlt a `docs/` könyvtárból
+ * - Feldolgozza a frontmatter metaadatokat (title, description, related, stb.)
+ * - Megjeleníti az oldalt React komponensekkel
+ * - Breadcrumb navigációt generál a felhasználónak
+ * - Kezeli az „AppOnly” és „PagesOnly” MDX komponenseket (App/Pages Router specifikus tartalom)
+ * - Feldolgozza a `related.links` mezőt és linkkártyákat renderel
+ *
+ * 📌 Példa URL:
+ * /docs/app/getting-started
+ *
+ * Ehhez a rendszer betölti:
+ * /docs/01-app/01-getting-started.mdx
+ *
+ * 🧾 Példa frontmatter a fájl tetején:
+ * ---
+ * title: Getting Started
+ * description: Első lépések az App Routerrel
+ * related:
+ *   title: Kapcsolódó oldalak
+ *   links:
+ *     - app/routing
+ *     - app/layout
+ * ---
+ *
+ * ✨ Használt eszközök:
+ * - fs (Node.js) → fájlok olvasására
+ * - compileMDX (next-mdx-remote/rsc) → MDX → React konvertálásra
+ * - remarkGfm → GitHub-stílusú markdown támogatásra
+ * - mdxComponents → egyedi MDX komponensek támogatása (pl. Image)
+ * - Lucide ikonok → jelölésekhez
+ * - Breadcrumb logika → címek frontmatterből
+ * - Related linkek → belső hivatkozások feldolgozása
+ *
+ * 📦 Adatfolyam röviden:
+ * 1️⃣  A dinamikus route kap egy `slug` paramétert
+ * 2️⃣  A `resolveDocFile` + `restoreOriginalSlug` alapján megtaláljuk a fájlt
+ * 3️⃣  A fájlt beolvassuk → MDX-re fordítjuk → frontmatter és content szétválik
+ * 4️⃣  Rendereljük az oldalt tartalommal, extra tartalommal és kapcsolódó linkekkel
+ * 5️⃣  A breadcrumb-hoz a `getTitleForSlug` adja vissza a címeket
+ */
+
+
 import fs from "fs";
-import path from "path";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { mdxComponents } from "@/lib/mdxComponents";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 import { Check, X as Cross, Info, AlertTriangle } from "lucide-react";
 import type { LucideProps } from "lucide-react";
+import Link from "next/link";
+import {
+  resolveDocFile,
+  restoreOriginalSlug,
+  restoreOriginalSourcePath,
+  getTitleForSlug,
+  resolveRelatedLinks,
+} from "@/lib/docs-utils";
+import { generatePageMetadata } from "@/lib/metadata";
 
-export async function generateMetadata(
-  { params }: { params: Promise<{ slug?: string[] }> },
 
-): Promise<Metadata> {
+
+
+/**
+ * 📜 DocFrontmatter
+ *
+ * Meghatározza az MDX fájlok elején található frontmatter mezők típusát.
+ * Ezek a mezők metaadatként szolgálnak az oldalhoz.
+ */
+export async function generateMetadata({ params }: { params: Promise<{ slug?: string[] }> }): Promise<Metadata> {
   const { slug } = await params;
-  const slugParts = slug ?? [];
-  const originalSlug = restoreOriginalSlug(slugParts);
-  const filePath = resolveDocFile(originalSlug);
+  return generatePageMetadata(slug ?? []);
+};
 
-  if (!filePath) {
-    return {
-      title: "Oldal nem található",
-    };
-  }
-
-  // Frontmatter kiolvasása a fájlból
-  const source = fs.readFileSync(filePath, "utf8");
-  const match = source.match(/^---([\s\S]*?)---/);
-
-  let pageTitle: string | undefined = undefined;
-  let pageDescription: string | undefined = undefined;
-
-  if (match) {
-    const fm = match[1];
-    const titleMatch = fm.match(/title:\s*(.*)/);
-    const descMatch = fm.match(/description:\s*(.*)/);
-
-    if (titleMatch) pageTitle = titleMatch[1].trim();
-    if (descMatch) pageDescription = descMatch[1].trim();
-  }
-
-  return {
-    title: pageTitle ?? "Next.js Magyar Dokumentáció",
-    description:
-      pageDescription ??
-      "Fedezd fel a Next.js hivatalos dokumentációját magyar nyelven — magyarázatokkal és példákkal.",
-  };
-}
-
-
+/**
+ * 📜 DocFrontmatter
+ *
+ * Meghatározza az MDX fájlok elején található frontmatter mezők típusát.
+ * Ezek a mezők metaadatként szolgálnak az oldalhoz.
+ */
 export interface DocFrontmatter {
   title?: string;
   description?: string;
@@ -56,8 +93,17 @@ export interface DocFrontmatter {
     description?: string;
     links?: string[];
   };
-}
+};
 
+
+
+
+/**
+ * 🧭 DocsSlugPage
+ *
+ * Ez maga az oldal, ami a dinamikus `slug` alapján rendereli
+ * a dokumentáció tartalmát.
+ */
 export default async function DocsSlugPage({
   params
 }: {
@@ -65,12 +111,27 @@ export default async function DocsSlugPage({
 }) {
   const { slug } = await params;
   const slugParts = slug ?? [];
+  // 🪄 Megfelelő fájl kikeresése a slug alapján
+  const filePath = resolveDocFile(restoreOriginalSlug(slugParts));
+  if (!filePath) {
+    return <div>404 - Az oldal nem található.</div>;
+  }
 
 
+
+
+
+  // *---------------
+  // 🧭 Ellenőrizzük, melyik dokumentációs részben vagyunk (App vagy Pages Router)
   const isAppSection = slugParts[0] === "app";
   const isPagesSection = slugParts[0] === "pages";
 
-
+  /**
+ * 🧩 Komponensek, amiket az MDX fájlban lehet használni
+ * - AppOnly és PagesOnly → szekciók feltételes megjelenítéséhez
+ * - Image → saját MDX képképernyő
+ * - Lucide ikonok → figyelmeztetés, infó, jelölés, stb.
+ */
   const components = {
     AppOnly: ({ children }: { children: React.ReactNode }) => {
       if (!isAppSection) return null;
@@ -82,24 +143,11 @@ export default async function DocsSlugPage({
     },
     Image: mdxComponents.Image, // ← a képes komponensed megmaradhat központilag
 
-
     Check: (props: LucideProps) => <Check {...props} />,
     Cross: (props: LucideProps) => <Cross {...props} />,
     Info: (props: LucideProps) => <Info {...props} />,
     Alert: (props: LucideProps) => <AlertTriangle {...props} />,
   };
-
-  //  URL-ben megtisztított slug
-  const originalSlug = restoreOriginalSlug(slugParts);
-
-  const filePath = resolveDocFile(originalSlug);
-
-  if (!filePath) {
-    return <div>404 - Az oldal nem található.</div>;
-  }
-
-
-
 
   const source = fs.readFileSync(filePath, "utf8");
   const { content, frontmatter } = await compileMDX<DocFrontmatter>({
@@ -113,9 +161,12 @@ export default async function DocsSlugPage({
     components,
   });
 
-
-
-  // Ha van `source` mező → betöltjük a hivatkozott fájlt is
+  /**
+   * 🧩 Extra tartalom betöltése, ha van `source` mező a frontmatterben
+   * 
+   * Ez lehetővé teszi, hogy egy MDX oldal másik fájl tartalmát is beemelje.
+   * Hasznos közös részek, sablonok vagy példák újrahasznosításához.
+   */
   let extraContent = null;
   if (frontmatter?.source) {
     const refPath = restoreOriginalSourcePath(frontmatter.source);
@@ -129,11 +180,12 @@ export default async function DocsSlugPage({
         },
         components,
       });
-
       extraContent = refContent;
     }
+  };
 
-  }
+
+
 
 
   return (
@@ -141,17 +193,47 @@ export default async function DocsSlugPage({
                      prose-headings:font-bold prose-invert
                      hover:prose-a:text-blue-300 prose-a:text-blue-400 prose-headings:text-gray-100
                      prose-p:text-gray-300">
+
+      {/* Breadcrumb navigáció */}
+      <nav className="mt-12 lg:mt-6 mb-6 text-sm text-gray-400">
+        <ol className="flex flex-wrap items-center gap-1">
+          <li>
+            <a href="/docs" className="hover:text-blue-400">Next.js Docs</a>
+          </li>
+          {slugParts.map((_, index) => {
+            const currentSlug = slugParts.slice(0, index + 1);
+            const href = `/docs/${currentSlug.join("/")}`;
+            const title = getTitleForSlug(currentSlug) ?? currentSlug.at(-1);
+
+            return (
+              <li key={href} className="flex items-center">
+                <span className="mx-1">›</span>
+                {index === slugParts.length - 1 ? (
+                  <span className="text-blue-400">{title}</span>
+                ) : (
+                  <Link href={href} className="hover:text-blue-400">{title}</Link>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+
+      {/* Oldalcím és leírás */}
       {frontmatter?.title && <h1>{frontmatter.title}</h1>}
       {frontmatter?.description && <p>{frontmatter.description}</p>}
+
+      {/* 📖 MDX tartalom renderelése */}
       {content}
+
+      {/* 🧩 Extra tartalom renderelése, ha van */}
       {extraContent && (
-        <div className="mt-8 pt-6 border-t border-gray-700">
+        <div className="mt-2 pt-6 border-t border-gray-700">
           {extraContent}
         </div>
       )}
 
-
-
+      {/* 🔗 Kapcsolódó oldalak blokk */}
       {frontmatter?.related?.links && frontmatter.related.links.length > 0 && (
         <section className="mt-12">
           {frontmatter.related.title && (
@@ -162,8 +244,6 @@ export default async function DocsSlugPage({
           {frontmatter.related.description && (
             <p className="mb-4 text-gray-400">{frontmatter.related.description}</p>
           )}
-
-
 
           {(() => {
             const links = resolveRelatedLinks(frontmatter.related.links);
@@ -209,140 +289,6 @@ export default async function DocsSlugPage({
           })()}
         </section>
       )}
-
-
-
     </main>
   );
-
-}
-
-// 🧭 fájlkeresés az eredeti számozott slug alapján
-function resolveDocFile(slug: string[]) {
-  const baseDir = path.join(process.cwd(), "docs");
-  if (slug.length === 0) {
-    const index = path.join(baseDir, "index.mdx");
-    if (fs.existsSync(index)) return index;
-  }
-
-  const indexInDir = path.join(baseDir, ...slug, "index.mdx");
-  if (fs.existsSync(indexInDir)) return indexInDir;
-
-  const file = path.join(baseDir, ...slug) + ".mdx";
-  if (fs.existsSync(file)) return file;
-
-  return null;
 };
-
-
-
-
-function restoreOriginalSourcePath(source: string) {
-  const segments = source.split("/");
-  const restoredSegments = restoreOriginalSlug(segments);
-  const baseDir = path.join(process.cwd(), "docs");
-
-  const filePath = path.join(baseDir, ...restoredSegments) + ".mdx";
-  if (fs.existsSync(filePath)) {
-    return filePath;
-  }
-
-  // 🟡 ha nincs közvetlen mdx fájl → nézzük meg, van-e index.mdx az adott mappában
-  const indexPath = path.join(baseDir, ...restoredSegments, "index.mdx");
-  if (fs.existsSync(indexPath)) {
-    return indexPath;
-  }
-
-  return filePath; // fallback
-}
-
-
-
-
-
-
-// 🧹 URL → fájlnév visszaalakító (hozzáteszi a sorszámot)
-function restoreOriginalSlug(cleaned: string[]) {
-  const baseDir = path.join(process.cwd(), "docs");
-
-  let currentPath = baseDir;
-  const result: string[] = [];
-
-  cleaned.forEach((segment, index) => {
-    const entries = fs.readdirSync(currentPath);
-
-    // Ha ez az utolsó szegmens, fájlt is keresünk
-    if (index === cleaned.length - 1) {
-      // 1️⃣ Először fájlt keresünk (pl. "01-telepites.mdx")
-      const fileMatch = entries.find(
-        (e) =>
-          e.endsWith(".mdx") &&
-          e.replace(/^\d+-/, "").replace(/\.mdx$/, "") === segment
-      );
-
-      if (fileMatch) {
-        result.push(fileMatch.replace(/\.mdx$/, "")); // fájlnév kiterjesztés nélkül
-        return;
-      }
-
-      // 2️⃣ Ha nincs fájl, próbáljuk mappaként (index.mdx lehet benne)
-      const dirMatch = entries.find(
-        (e) =>
-          fs.statSync(path.join(currentPath, e)).isDirectory() &&
-          e.replace(/^\d+-/, "") === segment
-      );
-      if (dirMatch) {
-        result.push(dirMatch);
-        currentPath = path.join(currentPath, dirMatch);
-      } else {
-        result.push(segment);
-        currentPath = path.join(currentPath, segment);
-      }
-    } else {
-      // 🔹 Köztes szegmenseknél mappát keresünk
-      const dirMatch = entries.find(
-        (e) =>
-          fs.statSync(path.join(currentPath, e)).isDirectory() &&
-          e.replace(/^\d+-/, "") === segment
-      );
-      if (dirMatch) {
-        result.push(dirMatch);
-        currentPath = path.join(currentPath, dirMatch);
-      } else {
-        result.push(segment);
-        currentPath = path.join(currentPath, segment);
-      }
-    }
-  });
-
-  return result;
-};
-
-
-function resolveRelatedLinks(links: string[]): { title: string; href: string }[] {
-  const result: { title: string; href: string }[] = [];
-
-  for (const link of links) {
-    const filePath = restoreOriginalSourcePath(link);
-    if (fs.existsSync(filePath)) {
-      const source = fs.readFileSync(filePath, "utf8");
-      const frontmatter = source.match(/^---([\s\S]*?)---/);
-      let title = link.split("/").pop() || "";
-
-      // próbáljuk kiolvasni a title-t frontmatterből
-      if (frontmatter) {
-        const titleMatch = frontmatter[1].match(/title:\s*(.*)/);
-        if (titleMatch) {
-          title = titleMatch[1].trim();
-        }
-      }
-
-      // a href a cleaned slug alapján (pl. /docs/app/getting-started/installation)
-      const href = `/docs/${link}`;
-
-      result.push({ title, href });
-    }
-  }
-
-  return result;
-}

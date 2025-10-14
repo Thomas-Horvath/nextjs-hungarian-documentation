@@ -38,7 +38,7 @@ export default function Sidebar({ tree }: { tree: NavNode[] }) {
         (node.path !== "/docs/01-app" && node.path !== "/docs/02-pages")
       )
   );
-  console.log(tree)
+
 
   return (
     <>
@@ -227,19 +227,19 @@ function SidebarTree({
 
         return (
           <li key={node.path || node.title}>
-            <div
-              className={linkClasses}
-              onClick={() => {
-                if (hasChildren && level >= 1 && node.path) {
-                  toggleNode(node.path);
-                }
-              }}
-            >
+            <div className={linkClasses}>
               {cleanPath ? (
                 <Link
                   href={cleanPath}
                   className="flex-1"
-                  onClick={(e) => { if (hasChildren && level >= 1) { onClickLink?.(); } }}
+                  onClick={(e) => {
+                    if (hasChildren && level >= 1) {
+                 
+                      toggleNode(node.path!);
+                    } else {
+                      onClickLink?.(); // bezárja a mobil menüt
+                    }
+                  }}
                 >
                   {node.title}
                 </Link>
