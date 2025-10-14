@@ -232,9 +232,8 @@ function SidebarTree({
                 <Link
                   href={cleanPath}
                   className="flex-1"
-                  onClick={(e) => {
+                  onClick={() => {
                     if (hasChildren && level >= 1) {
-                 
                       toggleNode(node.path!);
                     } else {
                       onClickLink?.(); // bezárja a mobil menüt

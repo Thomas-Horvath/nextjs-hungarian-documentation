@@ -198,7 +198,7 @@ export default async function DocsSlugPage({
       <nav className="mt-12 lg:mt-6 mb-6 text-sm text-gray-400">
         <ol className="flex flex-wrap items-center gap-1">
           <li>
-            <a href="/docs" className="hover:text-blue-400">Next.js Docs</a>
+            <Link href="/docs" className="hover:text-blue-400">Next.js Docs</Link>
           </li>
           {slugParts.map((_, index) => {
             const currentSlug = slugParts.slice(0, index + 1);
@@ -252,7 +252,7 @@ export default async function DocsSlugPage({
             if (links.length === 1) {
               const link = links[0];
               return (
-                <a
+                <Link
                   href={link.href}
                   className="inline-block
                              p-6 rounded-lg
@@ -262,7 +262,7 @@ export default async function DocsSlugPage({
                   <h3 className="text-lg font-semibold text-blue-400 hover:text-blue-300">
                     {link.title}
                   </h3>
-                </a>
+                </Link>
               );
             }
 
@@ -271,7 +271,7 @@ export default async function DocsSlugPage({
             return (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {links.map((link) => (
-                  <a
+                  <Link
                     key={link.href}
                     href={link.href}
                     className="block
@@ -282,7 +282,7 @@ export default async function DocsSlugPage({
                     <h3 className="text-lg font-semibold text-blue-400 hover:text-blue-300">
                       {link.title}
                     </h3>
-                  </a>
+                  </Link>
                 ))}
               </div>
             );
