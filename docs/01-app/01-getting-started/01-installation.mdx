@@ -1,19 +1,19 @@
 ---
 title: Telepítés
-description: Learn how to create a new Next.js application with the `create-next-app` CLI, and set up TypeScript, ESLint, and Module Path Aliases.
+description: Ismerd meg, hogyan hozhatsz létre új Next.js alkalmazást a `create-next-app` parancssori felülettel, és hogyan állíthatsz be TypeScript, ESLint és modulútvonal-aliasokat.
 ---
 
-{/* The content of this doc is shared between the app and pages router. You can use the `<PagesOnly>Content</PagesOnly>` component to add content that is specific to the Pages Router. Any shared content should not be wrapped in a component. */}
+{/* A dokumentum tartalma meg van osztva az App és a Pages Router között. A `<PagesOnly>Content</PagesOnly>` komponenssel olyan tartalmat adhatsz hozzá, amely kifejezetten a Pages Routerre jellemző. A megosztott tartalmat nem szabad komponensbe csomagolni. */}
 
 <AppOnly>
 
-Create a new Next.js app and run it locally.
+Hozz létre egy új Next.js alkalmazást, és futtasd helyben.
 
-## Quick start
+## Gyors kezdés
 
-1. Create a new Next.js app named `my-app`
-2. `cd my-app` and start the dev server.
-3. Visit `http://localhost:3000`.
+1. Hozz létre egy új Next.js alkalmazást `my-app` néven.
+2. Futtasd a `cd my-app` parancsot, és indítsd el a fejlesztői szervert.
+3. Látogass el a `http://localhost:3000` címre.
 
 ```bash package="pnpm"
 pnpm create next-app@latest my-app --yes
@@ -39,44 +39,44 @@ cd my-app
 bun dev
 ```
 
-- `--yes` skips prompts using saved preferences or defaults. The default setup enables TypeScript, Tailwind, App Router, and Turbopack, with import alias `@/*`.
+- A `--yes` opció kihagyja a kezdő promptokat és a mentett beállításokat vagy az alapértelmezett beállításokat használja. Az alapértelmezett beállítás engedélyezi a TypeScript, Tailwind, App Router és Turbopack használatát valamint `@/*` import aliast.
 
 </AppOnly>
 
-## System requirements
+## Rendszer  követelmények
 
-Before you begin, make sure your system meets the following requirements:
+Mielőtt elkezdenéd, győződj meg róla, hogy a rendszered megfelel a következő követelményeknek:
 
-- [Node.js 18.18](https://nodejs.org/) or later.
-- macOS, Windows (including WSL), or Linux.
+- [Node.js 18.18](https://nodejs.org/) vagy újabb.
+- macOS, Windows (beleértve a WSL) vagy Linux.
 
-## Create with the CLI
+## Létrehozás a parancssori felülettel
 
-The quickest way to create a new Next.js app is using [`create-next-app`](/docs/app/api-reference/cli/create-next-app), which sets up everything automatically for you. To create a project, run:
+Egy új Next.js alkalmazás létrehozásának leggyorsabb módja a [`create-next-app`](/docs/app/api-reference/cli/create-next-app) használata, amely mindent automatikusan beállít. Projekt létrehozásához futtassa a következő parancsot:
 
 ```bash filename="Terminal"
 npx create-next-app@latest
 ```
 
-On installation, you'll see the following prompts:
+A telepítés során a következő utasításokat fogja látni:
 
 ```txt filename="Terminal"
-What is your project named? my-app
-Would you like to use TypeScript? No / Yes
-Which linter would you like to use? ESLint / Biome / None
-Would you like to use Tailwind CSS? No / Yes
-Would you like your code inside a `src/` directory? No / Yes
-Would you like to use App Router? (recommended) No / Yes
-Would you like to use Turbopack? (recommended) No / Yes
-Would you like to customize the import alias (`@/*` by default)? No / Yes
-What import alias would you like configured? @/*
+What is your project named? my-app                                              // Mi a projekted neve? my-app
+Would you like to use TypeScript? No / Yes                                      // TypeScriptet szeretnél használni? Nem / Igen
+Which linter would you like to use? ESLint / Biome / None                       // Melyik lintert szeretnéd használni? ESLint / Biome / Nincs
+Would you like to use Tailwind CSS? No / Yes                                    // Tailwind CSS-t szeretnéd használni? Nem / Igen
+Would you like your code inside a `src/` directory? No / Yes                    // A kódodat egy `src/` könyvtárban szeretnéd látni? Nem / Igen
+Would you like to use App Router? (recommended) No / Yes                        // App Routert szeretnéd használni? (ajánlott) Nem / Igen
+Would you like to use Turbopack? (recommended) No / Yes                         // Turbopackot szeretnél használni? (ajánlott) Nem / Igen
+Would you like to customize the import alias (`@/*` by default)? No / Yes       // Testreszabod az import aliast (alapértelmezés szerint `@/*`)? Nem / Igen
+What import alias would you like configured? @/*                                // Milyen import aliast szeretnéd konfigurálni? @/*
 ```
 
-After the prompts, [`create-next-app`](/docs/app/api-reference/cli/create-next-app) will create a folder with your project name and install the required dependencies.
+A promptok után a [`create-next-app`](/docs/app/api-reference/cli/create-next-app) létrehoz egy mappát a projekted nevével, és telepíti a szükséges függőségeket.
 
-## Manual installation
+## Manual telepítés
 
-To manually create a new Next.js app, install the required packages:
+Új Next.js alkalmazás manuális létrehozásához telepítse a szükséges csomagokat:
 
 ```bash package="pnpm"
 pnpm i next@latest react@latest react-dom@latest
@@ -94,9 +94,9 @@ yarn add next@latest react@latest react-dom@latest
 bun add next@latest react@latest react-dom@latest
 ```
 
-> **Good to know**: The App Router uses [React canary releases](https://react.dev/blog/2023/05/03/react-canaries) built-in, which include all the stable React 19 changes, as well as newer features being validated in frameworks. The Pages Router uses the React version you install in `package.json`.
+> **Jó tudni**: Az App Router beépített [React canary kiadásokat](https://react.dev/blog/2023/05/03/react-canaries) használ, amelyek tartalmazzák az összes stabil React 19 változást, valamint az újabb, keretrendszerekben validált funkciókat is. A Pages Router a `package.json` fájlban telepített React verziót használja.
 
-Then, add the following scripts to your `package.json` file:
+Ezután add hozzá a következő szkripteket a `package.json` fájlodhoz:
 
 ```json filename="package.json"
 {
@@ -110,22 +110,23 @@ Then, add the following scripts to your `package.json` file:
 }
 ```
 
-These scripts refer to the different stages of developing an application:
+Ezek a parancsok az alkalmazás fejlesztésének különböző szakaszaira vonatkoznak:
 
-- `next dev`: Starts the development server using Turbopack (default bundler).
-- `next build`: Builds the application for production.
-- `next start`: Starts the production server.
-- `eslint`: Runs ESLint.
+- `next dev`: Elindítja a fejlesztői szervert a Turbopack (alapértelmezett csomagoló) használatával.
+- `next build`: Felépíti az alkalmazást éles környezethez.
+- `next start`: Futtatja az alkalmazást éles környezetben.
+- `eslint`: Futtatja az ESLint-et.
 
-Turbopack is now the default bundler. To use Webpack run `next dev --webpack` or `next build --webpack`. See the [Turbopack docs](/docs/app/api-reference/turbopack) for configuration details.
 
+A Turbopack mostantól az alapértelmezett csomagoló. A Webpack használatához futtassa a `next dev --webpack` vagy a `next build --webpack` parancsot. A konfigurációs részletekért lásd a [Turbopack dokumentációját](/docs/app/api-reference/turbopack).
 <AppOnly>
 
-### Create the `app` directory
+### Hozd létre az `app` könyvtárat
 
-Next.js uses file-system routing, which means the routes in your application are determined by how you structure your files.
+A Next.js fájlrendszer-útválasztást használ, ami azt jelenti, hogy az alkalmazásodban lévő útvonalakat a fájlok strukturálása határozza meg.
 
-Create an `app` folder. Then, inside `app`, create a `layout.tsx` file. This file is the [root layout](/docs/app/api-reference/file-conventions/layout#root-layout). It's required and must contain the `<html>` and `<body>` tags.
+Hozz létre egy `app` mappát. Ezután az `app` mappán belül hozz létre egy `layout.tsx` fájlt. Ez a fájl a [root layout](/docs/app/api-reference/file-conventions/layout#root-layout). A fájl kötelező, és tartalmaznia kell a `<html>` és `<body>` címkéket.
+
 
 ```tsx filename="app/layout.tsx" switcher
 export default function RootLayout({
@@ -151,7 +152,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Create a home page `app/page.tsx` with some initial content:
+Hozz létre egy `app/page.tsx` kezdőlapot a következő kezdeti tartalommal:
 
 ```tsx filename="app/page.tsx" switcher
 export default function Page() {
@@ -165,7 +166,7 @@ export default function Page() {
 }
 ```
 
-Both `layout.tsx` and `page.tsx` will be rendered when the user visits the root of your application (`/`).
+Mind a `layout.tsx`, mind a `page.tsx` fájlok megjelennek, amikor a felhasználó az alkalmazás gyökeréhez (`/`) navigál.
 
 <Image
   alt="App Folder Structure"
@@ -175,21 +176,20 @@ Both `layout.tsx` and `page.tsx` will be rendered when the user visits the root 
   height="363"
 />
 
-> **Good to know**:
+> **Jó tudni**:
 >
-> - If you forget to create the root layout, Next.js will automatically create this file when running the development server with `next dev`.
-> - You can optionally use a [`src` folder](/docs/app/api-reference/file-conventions/src-folder) in the root of your project to separate your application's code from configuration files.
+> - Ha elfelejted létrehozni a root layout-ot, a Next.js automatikusan létrehozza ezt a fájlt, amikor a fejlesztői szervert a `next dev` paranccsal futtatod.
+> - Opcionálisan használhatsz egy [`src` mappát](/docs/app/api-reference/file-conventions/src-folder) a projekted gyökerében, hogy elkülönítsd az alkalmazás kódját a konfigurációs fájloktól.
 
 </AppOnly>
 
 <PagesOnly>
 
-### Create the `pages` directory
+### Hozd létre a `pages` könyvtárat
 
-Next.js uses file-system routing, which means the routes in your application are determined by how you structure your files.
+A Next.js fájlrendszer-útválasztást használ, ami azt jelenti, hogy az alkalmazásodban lévő útvonalakat a fájlok strukturálása határozza meg.
 
-Create a `pages` directory at the root of your project. Then, add an `index.tsx` file inside your `pages` folder. This will be your home page (`/`):
-
+Hozz létre egy `pages` könyvtárat a projekted gyökerében. Ezután adj hozzá egy `index.tsx` fájlt a `pages` mappádban. Ez lesz a kezdőlapod (`/`):
 ```tsx filename="pages/index.tsx" switcher
 export default function Page() {
   return <h1>Hello, Next.js!</h1>
@@ -202,7 +202,7 @@ export default function Page() {
 }
 ```
 
-Next, add an `_app.tsx` file inside `pages/` to define the global layout. Learn more about the [custom App file](/docs/pages/building-your-application/routing/custom-app).
+Ezután adj hozzá egy `_app.tsx` fájlt a `pages/` könyvtáron belül a globális elrendezés meghatározásához. Tudj meg többet az [egyéni alkalmazásfájlról](/docs/pages/building-your-application/routing/custom-app).
 
 ```tsx filename="pages/_app.tsx" switcher
 import type { AppProps } from 'next/app'
@@ -218,7 +218,7 @@ export default function App({ Component, pageProps }) {
 }
 ```
 
-Finally, add a `_document.tsx` file inside `pages/` to control the initial response from the server. Learn more about the [custom Document file](/docs/pages/building-your-application/routing/custom-document).
+Végül adj hozzá egy `_document.tsx` fájlt a `pages/` könyvtáron belül a szervertől érkező kezdeti válasz szabályozásához. Tudj meg többet az [egyéni dokumentumfájlról](/docs/pages/building-your-application/routing/custom-document).
 
 ```tsx filename="pages/_document.tsx" switcher
 import { Html, Head, Main, NextScript } from 'next/document'
@@ -254,11 +254,12 @@ export default function Document() {
 
 </PagesOnly>
 
-### Create the `public` folder (optional)
+### Hozd létre a „public” mappát (opcionális)
 
-Create a [`public` folder](/docs/app/api-reference/file-conventions/public-folder) at the root of your project to store static assets such as images, fonts, etc. Files inside `public` can then be referenced by your code starting from the base URL (`/`).
+Hozz létre egy [`public` mappát](/docs/app/api-reference/file-conventions/public-folder) a projekted gyökerében, ahol statikus elemeket, például képeket, betűtípusokat stb. tárolhatsz. A `public` mappában található fájlokra ezután a kódod hivatkozhat az alap URL-ből (`/`) kiindulva.
 
-You can then reference these assets using the root path (`/`). For example, `public/profile.png` can be referenced as `/profile.png`:
+
+Ezekre az elemekre ezután a gyökérútvonal (`/`) segítségével hivatkozhatsz. Például a `public/profile.png` fájlra `/profile.png` néven lehet hivatkozni:
 
 ```tsx filename="app/page.tsx" highlight={4} switcher
 import Image from 'next/image'
@@ -276,29 +277,30 @@ export default function Page() {
 }
 ```
 
-## Run the development server
+## Futtassa a fejlesztői szervert
 
-1. Run `npm run dev` to start the development server.
-2. Visit `http://localhost:3000` to view your application.
-3. Edit the <AppOnly>`app/page.tsx`</AppOnly><PagesOnly>`pages/index.tsx`</PagesOnly> file and save it to see the updated result in your browser.
+1. Futtassd az `npm run dev` parancsot a fejlesztői szerver elindításához.
+2. Látogass el a `http://localhost:3000` címre az alkalmazás megtekintéséhez.
+3. Szerkeszd az <AppOnly>`app/page.tsx`</AppOnly><PagesOnly>`pages/index.tsx`</PagesOnly> fájlt, és mentsd el, hogy a frissített eredményt a böngészőben is láthasd.
 
-## Set up TypeScript
+## TypeScript beállítása
 
-> Minimum TypeScript version: `v5.1.0`
+> Minimális TypeScript verzió: `v5.1.0`
 
-Next.js comes with built-in TypeScript support. To add TypeScript to your project, rename a file to `.ts` / `.tsx` and run `next dev`. Next.js will automatically install the necessary dependencies and add a `tsconfig.json` file with the recommended config options.
+A Next.js beépített TypeScript támogatással rendelkezik. TypeScript hozzáadásához a projektedhez nevezd át a fájlt `.ts` / `.tsx` kiterjesztésűre, és futtasd a `next dev` parancsot. A Next.js automatikusan telepíti a szükséges függőségeket, és hozzáad egy `tsconfig.json` fájlt az ajánlott konfigurációs beállításokkal.
+
 
 <AppOnly>
 
-### IDE Plugin
+### IDE bővítmény
 
-Next.js includes a custom TypeScript plugin and type checker, which VSCode and other code editors can use for advanced type-checking and auto-completion.
+A Next.js tartalmaz egy egyéni TypeScript bővítményt és típusellenőrzőt, amelyet a VSCode és más kódszerkesztők speciális típusellenőrzéshez és automatikus kiegészítéshez használhatnak.
 
-You can enable the plugin in VS Code by:
+A bővítményt a VS Code-ban a következőképpen engedélyezhetied:
 
-1. Opening the command palette (`Ctrl/⌘` + `Shift` + `P`)
-2. Searching for "TypeScript: Select TypeScript Version"
-3. Selecting "Use Workspace Version"
+1. Nyissd meg a parancspalettát (`Ctrl/⌘` + `Shift` + `P`)
+2. Keressd meg a "TypeScript: TypeScript verzió kiválasztása" (TypeScript: Select TypeScript Version) kifejezést
+3. Válaszd a "Munkaterület verziójának használata" (Use Workspace Version)
 
 <Image
   alt="TypeScript Command Palette"
@@ -310,13 +312,13 @@ You can enable the plugin in VS Code by:
 
 </AppOnly>
 
-See the [TypeScript reference](/docs/app/api-reference/config/next-config-js/typescript) page for more information.
+További információkért látogass el a [TypeScript referencia](/docs/app/api-reference/config/next-config-js/typescript) oldalra.
 
-## Set up linting
+## Kódellenőrzés konfigurálása
 
-Next.js supports linting with either ESLint or Biome. Choose a linter and run it directly via `package.json` scripts.
+A Next.js támogatja a kódellenőrzést az ESLint vagy a Biome használatával. Válasssz ki egy lintert, és futtasd közvetlenül a `package.json` szkripteken keresztül.
 
-- Use **ESLint** (comprehensive rules):
+- Használj **ESLint**-et (átfogó szabályok):
 
 ```json filename="package.json"
 {
@@ -327,7 +329,7 @@ Next.js supports linting with either ESLint or Biome. Choose a linter and run it
 }
 ```
 
-- Or use **Biome** (fast linter + formatter):
+- Vagy használd a **Biome**-ot (gyors kódellenőrző + formázó):
 
 ```json filename="package.json"
 {
@@ -338,23 +340,24 @@ Next.js supports linting with either ESLint or Biome. Choose a linter and run it
 }
 ```
 
-If your project previously used `next lint`, migrate your scripts to the ESLint CLI with the codemod:
+Ha a projekted korábban a `next lint` függvényt használta, akkor migráld a szkripteket az ESLint CLI-be a következő kódmóddal:
 
 ```bash filename="Terminal"
 npx @next/codemod@canary next-lint-to-eslint-cli .
 ```
 
-If you use ESLint, create an explicit config (recommended `eslint.config.mjs`). ESLint supports both [the legacy `.eslintrc.*` and the newer `eslint.config.mjs` formats](https://eslint.org/docs/latest/use/configure/configuration-files#configuring-eslint). See the [ESLint API reference](/docs/app/api-reference/config/eslint#with-core-web-vitals) for a recommended setup.
+987 / 5 000
+Ha ESLint-et használsz, hozz létre egy explicit konfigurációt (ajánlott: `eslint.config.mjs`). Az ESLint mind a [régi `.eslintrc.*`, mind az újabb `eslint.config.mjs` formátumokat támogatja](https://eslint.org/docs/latest/use/configure/configuration-files#configuring-eslint). Az ajánlott beállításért lásd az [ESLint API referenciát](/docs/app/api-reference/config/eslint#with-core-web-vitals).
 
-> **Good to know**: Prior to Next.js 16, `next build` ran linting automatically. Now, this automatic build-time linting has been removed. Control when linting runs by invoking your linter via npm scripts.
+> **Jó tudni**: A Next.js 16 előtt a `next build` automatikusan futtatta az ellenőrzést. Most ezt az automatikus, build-idejű kódellenőrzést eltávolítottuk. A kódellenőrzés futtatásának szabályozásához hívd meg a lintinget npm szkripteken keresztül.
 
-See the [ESLint Plugin](/docs/app/api-reference/config/next-config-js/eslint) page for more information.
+További információkért lásd az [ESLint Plugin](/docs/app/api-reference/config/next-config-js/eslint) oldalt.
 
-## Set up Absolute Imports and Module Path Aliases
+## Abszolút importálások és modulútvonal-aliasok beállítása
 
-Next.js has in-built support for the `"paths"` and `"baseUrl"` options of `tsconfig.json` and `jsconfig.json` files.
+A Next.js beépített támogatással rendelkezik a `tsconfig.json` és `jsconfig.json` fájlok `"paths"` és `baseUrl"` beállításaihoz.
 
-These options allow you to alias project directories to absolute paths, making it easier and cleaner to import modules. For example:
+Ezek a beállítások lehetővé teszik a projektkönyvtárak abszolút elérési utakra való aliasozását, ami megkönnyíti és letisztultabbá teszi a modulok importálását. Például:
 
 ```jsx
 // Before
@@ -364,7 +367,7 @@ import { Button } from '../../../components/button'
 import { Button } from '@/components/button'
 ```
 
-To configure absolute imports, add the `baseUrl` configuration option to your `tsconfig.json` or `jsconfig.json` file. For example:
+Az abszolút importálás konfigurálásához adja hozzá a `baseUrl` konfigurációs opciót a `tsconfig.json` vagy `jsconfig.json` fájlhoz. Például:
 
 ```json filename="tsconfig.json or jsconfig.json"
 {
@@ -374,9 +377,9 @@ To configure absolute imports, add the `baseUrl` configuration option to your `t
 }
 ```
 
-In addition to configuring the `baseUrl` path, you can use the `"paths"` option to `"alias"` module paths.
+A `baseUrl` elérési út konfigurálása mellett a ``paths`` opciót is használhatod az ``alias`` modul elérési útjaihoz.
 
-For example, the following configuration maps `@/components/*` to `components/*`:
+Például a következő konfiguráció a `@/components/*`-t `components/*`-ra képezi le:
 
 ```json filename="tsconfig.json or jsconfig.json"
 {
@@ -390,4 +393,4 @@ For example, the following configuration maps `@/components/*` to `components/*`
 }
 ```
 
-Each of the `"paths"` are relative to the `baseUrl` location.
+Az ``elérési utak`` mindegyike relatív a ``baseUrl` helyéhez képest.

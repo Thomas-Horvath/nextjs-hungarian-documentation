@@ -231,3 +231,60 @@ export function resolveRelatedLinks(links: string[]) {
 
   return result;
 };
+
+
+/**
+ * 📂 Kilistázza az adott slug alatti gyerek MDX fájlokat és mappákat.
+ * Kinyeri a frontmatterből a title mezőt is, ha van.
+ */
+export function getChildDocs(slugParts: string[]) {
+  const baseDir = path.join(process.cwd(), "docs");
+  const targetDir = path.join(baseDir, ...restoreOriginalSlug(slugParts));
+
+  if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
+    return [];
+  }
+
+  const entries = fs.readdirSync(targetDir);
+  const result: { title: string; href: string }[] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(targetDir, entry);
+
+    // 📄 ha ez MDX fájl
+    if (entry.endsWith(".mdx")) {
+      const source = fs.readFileSync(fullPath, "utf8");
+      const frontmatter = source.match(/^---([\s\S]*?)---/);
+      let title = entry.replace(/^\d+-/, "").replace(/\.mdx$/, "");
+      if (frontmatter) {
+        const titleMatch = frontmatter[1].match(/title:\s*(.*)/);
+        if (titleMatch) title = titleMatch[1].trim();
+      }
+      const cleaned = entry.replace(/^\d+-/, "").replace(/\.mdx$/, "");
+      result.push({
+        title,
+        href: `/docs/${[...slugParts, cleaned].join("/")}`,
+      });
+    }
+
+    // 📁 ha ez egy mappa
+    else if (fs.statSync(fullPath).isDirectory()) {
+      const indexPath = path.join(fullPath, "index.mdx");
+      let title = entry.replace(/^\d+-/, "");
+      if (fs.existsSync(indexPath)) {
+        const source = fs.readFileSync(indexPath, "utf8");
+        const frontmatter = source.match(/^---([\s\S]*?)---/);
+        if (frontmatter) {
+          const titleMatch = frontmatter[1].match(/title:\s*(.*)/);
+          if (titleMatch) title = titleMatch[1].trim();
+        }
+      }
+      result.push({
+        title,
+        href: `/docs/${[...slugParts, title.toLowerCase().replace(/\s+/g, "-")].join("/")}`,
+      });
+    }
+  }
+
+  return result;
+}

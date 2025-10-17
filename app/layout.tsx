@@ -41,7 +41,7 @@ export default function DocsLayout({
 
   return (
     <html lang="hu">
-      <body className="min-w-[350px] overflow-hidden h-screen font-sans bg-black text-gray-200">
+      <body className="min-w-[350px] overflow-hidden h-screen font-sans bg-zinc-900 text-gray-200">
         <div className="flex flex-col lg:flex-row h-full">
           {/* SIDEBAR */}
           <SideBarWrapper />

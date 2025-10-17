@@ -62,6 +62,7 @@ import {
   restoreOriginalSourcePath,
   getTitleForSlug,
   resolveRelatedLinks,
+  getChildDocs
 } from "@/lib/docs-utils";
 import { generatePageMetadata } from "@/lib/metadata";
 
@@ -116,6 +117,12 @@ export default async function DocsSlugPage({
   const filePath = resolveDocFile(restoreOriginalSlug(slugParts));
   if (!filePath) {
     return <div>404 - Az oldal nem található.</div>;
+  }
+
+  // 📑 Csak ha 2-es szinten vagyunk → gyerek oldalak lekérése
+  let childPages: { title: string; href: string }[] = [];
+  if (slugParts.length === 2 ) {
+    childPages = getChildDocs(slugParts);
   }
 
 
@@ -222,7 +229,7 @@ export default async function DocsSlugPage({
 
       {/* Oldalcím és leírás */}
       {frontmatter?.title && <h1>{frontmatter.title}</h1>}
-      {frontmatter?.description && <p>{frontmatter.description}</p>}
+      {/* {frontmatter?.description && <p>{frontmatter.description}</p>} */}
 
       {/* 📖 MDX tartalom renderelése */}
       <PrismHighlighter />
@@ -235,6 +242,8 @@ export default async function DocsSlugPage({
           {extraContent}
         </div>
       )}
+
+
 
       {/* 🔗 Kapcsolódó oldalak blokk */}
       {frontmatter?.related?.links && frontmatter.related.links.length > 0 && (
@@ -292,6 +301,36 @@ export default async function DocsSlugPage({
           })()}
         </section>
       )}
+
+      {childPages.length > 0 && (
+        <section className="mt-12">
+          {/* <h2 className="mb-2 text-2xl font-bold text-gray-100">
+            Tartalom
+          </h2>
+          <p className="mb-4 text-gray-400">
+            Aloldalak ebben a fejezetben:
+          </p> */}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {childPages.map((page) => (
+              <Link
+                key={page.href}
+                href={page.href}
+                className="block
+                     p-4 rounded-lg
+                     bg-gray-900 border border-gray-800 hover:bg-gray-800
+                     transition"
+              >
+                <h3 className="text-lg font-semibold text-blue-400 hover:text-blue-300">
+                  {page.title}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+
     </main>
   );
 };

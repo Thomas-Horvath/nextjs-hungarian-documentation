@@ -45,14 +45,14 @@ export default function Sidebar({ tree }: { tree: NavNode[] }) {
       {/* 🧭 Fix header mobilon */}
       <div className="fixed flex items-center justify-between left-0 lg:hidden top-0 z-50
                       px-4 py-3 w-full
-                      bg-[#111111] border-b border-gray-800">
-        <Link href={"/"}>
+                      bg-zinc-950 border-b border-gray-800">
+        <Link href={"/"} >
           <h2 className="flex items-baseline text-2xl font-extrabold tracking-tight">
             Next<span className="ml-1 text-base text-blue-400">.js</span> 15
           </h2>
         </Link>
         <button
-          className="p-2"
+          className="p-2 cursor-pointer"
           onClick={() => setMenuOpen((prev) => !prev)}
           aria-label="Menü megnyitása"
         >
@@ -64,7 +64,7 @@ export default function Sidebar({ tree }: { tree: NavNode[] }) {
       <aside
         className={`flex-col hidden lg:flex overflow-hidden
                     lg:w-[450px]
-                    bg-[#111111] border-gray-800 border-r text-white`}
+                    bg-zinc-950 border-gray-700 border-r text-white`}
       >
         <div className="px-6 py-4 border-b border-gray-800">
           <Link href={"/"}>
@@ -111,7 +111,7 @@ export default function Sidebar({ tree }: { tree: NavNode[] }) {
       {
         menuOpen && (
           <div
-            className="fixed inset-0 z-40 flex flex-col lg:hidden bg-[#111111]"
+            className="fixed inset-0 z-40 flex flex-col lg:hidden bg-zinc-950"
           >
             {/* Header a menü tetején */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800">
@@ -121,7 +121,7 @@ export default function Sidebar({ tree }: { tree: NavNode[] }) {
                 </h2>
               </Link>
               <button
-                className="p-2"
+                className="p-2 cursor-pointer"
                 onClick={() => setMenuOpen(false)}
                 aria-label="Menü bezárása"
               >
